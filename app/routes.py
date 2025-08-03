@@ -1,20 +1,57 @@
-# API routes
-from typing import Optional
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
+from typing import Optional, List
+
+from app.schemas import Item
+from app.models import items_db
+
 
 router = APIRouter()
 
-
+# API routes
+# Root route
 @router.get("/")
 async def get_route():
     return {"message": "Hello, World!"}
 
-# path parameter
-@router.get("/items/{item_id}")
+# GET method to retrieve all items
+@router.get("/items/", response_model=List[Item])
+async def read_items():
+    return items_db
+
+# path parameter - get item by id
+@router.get("/items/{item_id}", response_model=Item)
 async def read_item(item_id: int):
-    return {
-        "item_id": item_id
-    }
+    for item in items_db:
+         if item.id == item_id:
+              return item
+         
+    raise HTTPException(status_code=400, detail="item not found")
+
+# POST method to create a new item
+@router.post("/items/", response_model=Item)
+async def create_item(item: Item):
+    items_db.append(item)    
+    return item
+
+# PUT method to update an existing item by ID
+@router.put("/items/{item_id}", response_model=Item)
+async def update_item(item_id: int, updated_item: Item):
+    for index, item in enumerate(items_db):
+        if item.id == item_id:
+            items_db[index] = updated_item
+            return updated_item
+        
+    raise HTTPException(status_code=404, detail="Item not found")
+
+# DELETE method to remove an item by ID
+@router.delete("/items/{item_id}")
+async def delete_item(item_id: int):
+    for index, item in enumerate(items_db):
+        if item.id == item_id:
+            del items_db[index]
+            return {"detail": "Item deleted"}
+        
+    raise HTTPException(status_code=404, detail="Item not found")
 
 # query parameter
 @router.get("/filter/")
