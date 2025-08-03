@@ -28,7 +28,14 @@ async def filter_items(category: str, price_lt: float):
 # search params
 @router.get("/search/")
 async def search_items(q: Optional[str] = None, skip: int = 0, limit: int = 10):
-    results = {"items": [{"item_id": "123"}, {"item_id": "456"}]}
+    # Example data
+    all_items = [{"item_id": "123"}, {"item_id": "456"}, {"item_id": "789"}, {"item_id": "101"}]
+    # Optionally filter by q (mocked)
+    filtered_items = [item for item in all_items if not q or q in item["item_id"]]
+    # Apply skip and limit
+    paginated_items = filtered_items[skip:skip + limit]
+    results = {"items": paginated_items}
     if q:
         results.update({"q": q})
+    results.update({"skip": skip, "limit": limit})
     return results
