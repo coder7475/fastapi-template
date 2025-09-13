@@ -4,6 +4,7 @@ from typing import Optional, List
 from app.schemas import Item
 from app.models import items_db
 
+from app.exceptions.custom_exceptions import CustomException
 
 router = APIRouter()
 
@@ -25,7 +26,7 @@ async def read_item(item_id: int):
          if item.id == item_id:
               return item
          
-    raise HTTPException(status_code=400, detail="item not found")
+    raise CustomException(name="item not found")
 
 # POST method to create a new item
 @router.post("/items/", response_model=Item)
