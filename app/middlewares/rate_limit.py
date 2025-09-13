@@ -26,7 +26,7 @@ async def rate_limit_middleware(request: Request, call_next):
             - Normal response from the next middleware/endpoint otherwise.
     """
     client_ip = request.client.host
-    print(requests)
+    
     if client_ip in requests:
         # Remove old requests outside the RATE_TIME window
         current_time = time.time()
