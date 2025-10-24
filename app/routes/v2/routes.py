@@ -5,12 +5,14 @@ from app.schemas import Item
 from app.models import items_db
 
 from app.exceptions.custom_exceptions import CustomException
+from app.schemas import ItemResponse
 
+# Router
 router = APIRouter()
 
 # API routes
 # GET method to retrieve all items
-@router.get("/items/", response_model=List[Item])
+@router.get("/items/", response_model=ItemResponse)
 async def read_items():
     return {
        "version": "v2",
