@@ -9,15 +9,13 @@ from app.exceptions.custom_exceptions import CustomException
 router = APIRouter()
 
 # API routes
-# Root route
-@router.get("/")
-async def get_route():
-    return {"message": "Hello, World!"}
-
 # GET method to retrieve all items
 @router.get("/items/", response_model=List[Item])
 async def read_items():
-    return items_db
+    return {
+       "version": "v1",
+       "items": items_db
+    }
 
 # path parameter - get item by id
 @router.get("/items/{item_id}", response_model=Item)

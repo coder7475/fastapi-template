@@ -15,5 +15,7 @@ async def custom_exception_handler(request: Request, exc: CustomException):
     """
     return JSONResponse(
         status_code=418,
-        content={"message": f"Oops! {exc.name} did something wrong."},
+        content= {
+                    "message": f"Oops! {exc.name} did something wrong."
+                 },
     )
