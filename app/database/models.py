@@ -1,7 +1,7 @@
 # Database models (if using SQLAlchemy, etc.)
 from typing import List
 from app.schemas import Item
-from database import Base
+from app.database.database import Base
 from sqlalchemy import Column, Integer, String, Boolean
 
 # In-memory storage for items
