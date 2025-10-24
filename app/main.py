@@ -91,3 +91,20 @@ def delete_todo(todo_id: int, db: Session = Depends(get_db)):
 def read_todos(db: Session = Depends(get_db)):
     todos = db.query(models.Todo).all()
     return todos
+
+# Background tasks
+from fastapi import BackgroundTasks
+@app.post("/todos/background/")
+async def create_todo_background(todo: schemas.TodoCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    def process_todo(todo_data: dict):
+        # Simulate long running task
+        import time
+        time.sleep(2)
+        print(f"Processed todo: {todo_data}")
+        
+    db_todo = models.Todo(**todo.dict())
+    db.add(db_todo)
+    db.commit()
+    db.refresh(db_todo)
+    background_tasks.add_task(process_todo, todo.dict())
+    return {"message": "Todo created, processing in background"}
