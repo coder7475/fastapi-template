@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
-from typing import Optional, List
+from typing import Optional
 
 from app.schemas import Item
-from app.models import items_db
+from app.database.models import items_db
 
 from app.exceptions.custom_exceptions import CustomException
 from app.schemas import ItemResponse

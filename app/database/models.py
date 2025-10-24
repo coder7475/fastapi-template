@@ -11,3 +11,5 @@ items_db: List[Item] = [
     Item(id=3, name="Item Three", description="This is the third item."),
 ]
 
+# SQLAlchemy Models
+# class Todo(Base):
